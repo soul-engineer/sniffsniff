@@ -15,7 +15,10 @@ add_executable (
         ${HEADERS}
         ${SOURCES} ${CMAKE_CURRENT_LIST_DIR}/main.cpp
 )
-target_link_libraries(${PROJECT} ${Boost_LIBRARIES})
+target_link_libraries (${PROJECT}
+        ${Boost_LIBRARIES}
+        ${CMAKE_THREAD_LIBS_INIT}
+)
 
 #------------------------------------------------------------------------------#
 #                                 Boost                                        #
@@ -26,6 +29,14 @@ find_package (
         COMPONENTS system program_options
 )
 include_directories (SYSTEM ${Boost_INCLUDE_DIRS})
+
+#------------------------------------------------------------------------------#
+#                                 Threads                                      #
+#------------------------------------------------------------------------------#
+find_package (
+        Threads
+        REQUIRED
+)
 
 #------------------------------------------------------------------------------#
 #                           Unit tests                                         #

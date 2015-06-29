@@ -21,7 +21,7 @@ set (CMAKE_CXX_FLAGS
 #------------------------------------------------------------------------------#
 # The whole idea of CMake configuration summary is taken from the PCRE project
 message (STATUS "")
-message (STATUS "${PROJECT} configuration summary:")
+message (STATUS "${PROJECT} project configuration summary:")
 message (STATUS "")
 message (STATUS "  Build configuration ............. : ${CMAKE_BUILD_TYPE}")
 message (STATUS "  Install prefix .................. : ${CMAKE_INSTALL_PREFIX}")
@@ -36,7 +36,7 @@ message (STATUS "")
 #------------------------------------------------------------------------------#
 set (CATCH_INCLUDE_DIR
         ${EXTERNAL_SOURCES_DIR}/catch)
-include_directories (${CATCH_INCLUDE_DIR})
+include_directories (SYSTEM ${CATCH_INCLUDE_DIR})
 set (HEADER_FILES
         ${CATCH_INCLUDE_DIR}/catch.hpp
 )

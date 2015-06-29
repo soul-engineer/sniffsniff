@@ -17,6 +17,7 @@ add_executable (
 )
 target_link_libraries (${PROJECT}
         ${Boost_LIBRARIES}
+        ${GLOG_LIBRARY}
         ${CMAKE_THREAD_LIBS_INIT}
 )
 

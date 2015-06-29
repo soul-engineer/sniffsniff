@@ -1,0 +1,41 @@
+# Sources
+set (HEADERS
+    ${HEADERS}
+)
+set (SOURCES
+    ${SOURCES}
+)
+
+# Build a binary
+add_executable (
+        ${PROJECT}
+        ${HEADERS}
+        ${SOURCES} ${CMAKE_CURRENT_LIST_DIR}/main.cpp
+)
+
+#------------------------------------------------------------------------------#
+#                           Unit tests                                         #
+#------------------------------------------------------------------------------#
+enable_testing()
+set (TEST_NAME ${PROJECT}_test)
+
+# Test sources
+set (TEST_HEADERS
+    ${CATCH_HEADER}
+)
+set (TEST_SOURCES
+        ${CMAKE_CURRENT_LIST_DIR}/main_test.cpp
+)
+
+# Build a test binary
+add_executable (
+        ${TEST_NAME}
+        ${HEADERS} ${SOURCES}
+        ${TEST_HEADERS} ${TEST_SOURCES}
+)
+
+# Add a binary to the test system
+add_test (
+        NAME ${TEST_NAME}
+        COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${TEST_NAME}
+)

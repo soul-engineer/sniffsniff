@@ -1,3 +1,6 @@
+#------------------------------------------------------------------------------#
+#                            General section                                   #
+#------------------------------------------------------------------------------#
 # Sources
 set (HEADERS
     ${HEADERS}
@@ -12,11 +15,21 @@ add_executable (
         ${HEADERS}
         ${SOURCES} ${CMAKE_CURRENT_LIST_DIR}/main.cpp
 )
+target_link_libraries(${PROJECT} ${Boost_LIBRARIES})
+
+#------------------------------------------------------------------------------#
+#                                 Boost                                        #
+#------------------------------------------------------------------------------#
+find_package (
+        Boost
+        REQUIRED
+        COMPONENTS system program_options
+)
+include_directories (SYSTEM ${Boost_INCLUDE_DIRS})
 
 #------------------------------------------------------------------------------#
 #                           Unit tests                                         #
 #------------------------------------------------------------------------------#
-enable_testing()
 set (TEST_NAME ${PROJECT}_test)
 
 # Test sources

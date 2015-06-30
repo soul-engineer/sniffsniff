@@ -37,7 +37,7 @@ namespace
 
 
 provider::provider(dispatcher& disp) noexcept
-: dispatcher_(disp), dev_handler_{}
+: dispatcher_(disp)
 {
     // ctor
 }

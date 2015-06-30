@@ -1,27 +1,4 @@
 #------------------------------------------------------------------------------#
-#                            General section                                   #
-#------------------------------------------------------------------------------#
-# Sources
-set (HEADERS
-    ${HEADERS}
-)
-set (SOURCES
-    ${SOURCES}
-)
-
-# Build a binary
-add_executable (
-        ${PROJECT}
-        ${HEADERS}
-        ${SOURCES} ${CMAKE_CURRENT_LIST_DIR}/main.cpp
-)
-target_link_libraries (${PROJECT}
-        ${Boost_LIBRARIES}
-        ${GLOG_LIBRARY}
-        ${CMAKE_THREAD_LIBS_INIT}
-)
-
-#------------------------------------------------------------------------------#
 #                                 Boost                                        #
 #------------------------------------------------------------------------------#
 find_package (
@@ -40,6 +17,52 @@ find_package (
 )
 
 #------------------------------------------------------------------------------#
+#                                  libpcap                                     #
+#------------------------------------------------------------------------------#
+# libpcap library
+find_library (PCAP_LIBRARY pcap)
+if (NOT PCAP_LIBRARY)
+        message (FATAL_ERROR "libpcap library is not found")
+endif ()
+
+# libpcap includes
+find_path (PCAP_INCLUDE_DIR pcap/pcap.h)
+if (NOT PCAP_INCLUDE_DIR)
+        message (FATAL_ERROR "libpcap includes are not found")
+endif ()
+
+message (STATUS "libpcap network traffic capture library:")
+message (STATUS "  library is found at ${PCAP_LIBRARY}")
+message (STATUS "  includes are found at ${PCAP_INCLUDE_DIR}")
+
+include_directories (SYSTEM ${PCAP_INCLUDE_DIR})
+
+#------------------------------------------------------------------------------#
+#                            General section                                   #
+#------------------------------------------------------------------------------#
+# Sources
+set (HEADERS
+        ${HEADERS}
+)
+set (SOURCES
+        ${SOURCES}
+)
+
+# Build a binary
+add_executable (
+        ${PROJECT}
+        ${HEADERS}
+        ${SOURCES}
+        main.cpp
+)
+target_link_libraries (${PROJECT}
+        ${PCAP_LIBRARY}
+        ${Boost_LIBRARIES}
+        ${GLOG_LIBRARY}
+        ${CMAKE_THREAD_LIBS_INIT}
+)
+
+#------------------------------------------------------------------------------#
 #                           Unit tests                                         #
 #------------------------------------------------------------------------------#
 set (TEST_NAME ${PROJECT}_test)
@@ -49,7 +72,7 @@ set (TEST_HEADERS
     ${CATCH_HEADER}
 )
 set (TEST_SOURCES
-        ${CMAKE_CURRENT_LIST_DIR}/main_test.cpp
+        main_test.cpp
 )
 
 # Build a test binary
@@ -59,8 +82,17 @@ add_executable (
         ${TEST_HEADERS} ${TEST_SOURCES}
 )
 
+target_link_libraries (${TEST_NAME}
+        ${PCAP_LIBRARY}
+        ${Boost_LIBRARIES}
+        ${GLOG_LIBRARY}
+        ${CMAKE_THREAD_LIBS_INIT}
+)
+set_target_properties(${TEST_NAME}
+                      PROPERTIES COMPILE_DEFINITIONS _BUILT_WITH_CATCH 
+)
 # Add a binary to the test system
 add_test (
         NAME ${TEST_NAME}
-        COMMAND ${CMAKE_CURRENT_BINARY_DIR}/${TEST_NAME}
+        COMMAND ${TEST_NAME}
 )

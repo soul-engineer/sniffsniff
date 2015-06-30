@@ -48,7 +48,7 @@ enable_testing()
 # glog library
 find_library (GLOG_LIBRARY glog)
 if (NOT GLOG_LIBRARY)
-        message (FATAL_ERROR "glog library or includes is not found")
+        message (FATAL_ERROR "glog library is not found")
 endif ()
 
 # glog includes
@@ -67,6 +67,9 @@ message (STATUS "Google logging library:")
 message (STATUS "  glog library is found at ${GLOG_LIBRARY}")
 message (STATUS "  glog includes are found at ${GLOG_INCLUDE_DIR}")
 message (STATUS "  gflags includes are found at ${GFLAGS_INCLUDE_DIR}")
+
+include_directories (SYSTEM ${GLOG_INCLUDE_DIR})
+include_directories (SYSTEM ${GFLAGS_INCLUDE_DIR})
 
 #------------------------------------------------------------------------------#
 #                             Source files                                     #

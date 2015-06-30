@@ -44,10 +44,12 @@ include_directories (SYSTEM ${PCAP_INCLUDE_DIR})
 set (HEADERS
         ${HEADERS}
         config.h
+        dispatcher.h
 )
 set (SOURCES
         ${SOURCES}
         config.cpp
+        dispatcher.cpp
 )
 
 # Build a binary

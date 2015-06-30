@@ -8,6 +8,7 @@
 #include "provider.h"
 #include "dispatcher.h"
 #include "config.h"
+#include "frame.h"
 #include <pcap/pcap.h>
 #include <glog/logging.h>
 #include <stdexcept>
@@ -17,8 +18,6 @@
 
 namespace
 {
-    // Maximum packet size to capture in bytes
-    const int SNAP_LEN {65535};
     // Packet read timeout in milliseconds
     const int READ_TIMEOUT {1};
     
@@ -61,7 +60,7 @@ void provider::open_iface(const config& cfg)
     
     dev_handler_ = pcap_open_live(
             cfg.get_if_name().c_str(),
-            SNAP_LEN,
+            frame::MAX_SIZE,
             cfg.get_promisc(),
             READ_TIMEOUT,
             error_buffer.data());

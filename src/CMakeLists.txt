@@ -45,11 +45,13 @@ set (HEADERS
         ${HEADERS}
         config.h
         dispatcher.h
+        frame.h
         provider.h
 )
 set (SOURCES
         ${SOURCES}
         config.cpp
+        frame.cpp
         dispatcher.cpp
         provider.cpp
 )
@@ -79,6 +81,7 @@ set (TEST_HEADERS
 )
 set (TEST_SOURCES
         config_test.cpp
+        frame_test.cpp
         main_test.cpp
         provider_test.cpp
 )

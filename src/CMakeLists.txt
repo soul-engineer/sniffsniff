@@ -43,9 +43,11 @@ include_directories (SYSTEM ${PCAP_INCLUDE_DIR})
 # Sources
 set (HEADERS
         ${HEADERS}
+        config.h
 )
 set (SOURCES
         ${SOURCES}
+        config.cpp
 )
 
 # Build a binary
@@ -72,6 +74,7 @@ set (TEST_HEADERS
     ${CATCH_HEADER}
 )
 set (TEST_SOURCES
+        config_test.cpp
         main_test.cpp
 )
 

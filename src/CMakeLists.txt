@@ -56,6 +56,14 @@ set (SOURCES
         provider.cpp
 )
 
+# External libraries to link to
+set (LIBRARIES
+        ${PCAP_LIBRARY}
+        ${GLOG_LIBRARY}
+        ${Boost_LIBRARIES}
+        ${CMAKE_THREAD_LIBS_INIT}
+)
+
 # Build a binary
 add_executable (${PROJECT}
         ${HEADERS}
@@ -63,10 +71,7 @@ add_executable (${PROJECT}
         main.cpp
 )
 target_link_libraries (${PROJECT}
-        ${PCAP_LIBRARY}
-        ${Boost_LIBRARIES}
-        ${GLOG_LIBRARY}
-        ${CMAKE_THREAD_LIBS_INIT}
+        ${LIBRARIES}
 )
 
 #------------------------------------------------------------------------------#
@@ -92,10 +97,7 @@ add_executable (${TEST_NAME}
 )
 
 target_link_libraries (${TEST_NAME}
-        ${PCAP_LIBRARY}
-        ${Boost_LIBRARIES}
-        ${GLOG_LIBRARY}
-        ${CMAKE_THREAD_LIBS_INIT}
+        ${LIBRARIES}
 )
 # Symbol "_BUILT_WITH_CATCH" is needed to allow unit tests inside source files
 set_target_properties(${TEST_NAME}

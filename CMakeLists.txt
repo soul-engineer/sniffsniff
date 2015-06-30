@@ -9,6 +9,8 @@ project (${PROJECT})
 # External sources directory
 set (EXTERNAL_SOURCES_DIR
         ${CMAKE_CURRENT_LIST_DIR}/external)
+# Binary output directory
+SET(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin)
 
 #------------------------------------------------------------------------------#
 #                           Compiler settings                                  #

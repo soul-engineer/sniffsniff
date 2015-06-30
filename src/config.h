@@ -27,10 +27,14 @@ public:
     
     bool get_promisc() const noexcept
     { return promisc_; }
+    
+    uint8_t get_thread_count() const noexcept
+    { return thread_count_; }
 
 protected:
     std::string if_name_;
     bool promisc_;
+    uint32_t thread_count_;
 };
 
 #endif	/* CONFIG_H */

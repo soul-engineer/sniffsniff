@@ -50,6 +50,8 @@ set (HEADERS
         frame.h
         frame_pool.h
         provider.h
+        worker.h
+        worker_pool.h
 )
 set (SOURCES
         ${SOURCES}
@@ -58,6 +60,8 @@ set (SOURCES
         frame_pool.cpp
         dispatcher.cpp
         provider.cpp
+        worker.cpp
+        worker_pool.cpp
 )
 
 # External libraries to link to

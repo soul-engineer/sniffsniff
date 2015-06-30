@@ -7,6 +7,7 @@
 
 #include "config.h"
 #include <glog/logging.h>
+#include <thread>
 
 
 namespace
@@ -16,7 +17,8 @@ namespace
 }
 
 config::config()
-: if_name_ {DEF_IF_NAME}, promisc_{DEF_PROMISC}
+: if_name_{DEF_IF_NAME}, promisc_{DEF_PROMISC},
+  thread_count_{std::thread::hardware_concurrency()}
 {
 }
 
@@ -54,6 +56,12 @@ SCENARIO( "config construction", TAGS )
             THEN( "default promisc" )
             {
                 REQUIRE( cfg.get_promisc() == DEF_PROMISC );
+            }
+            
+            THEN( "default thread count" )
+            {
+                REQUIRE( cfg.get_thread_count() ==
+                        std::thread::hardware_concurrency() );
             }
         }
     }

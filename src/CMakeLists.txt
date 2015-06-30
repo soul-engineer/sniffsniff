@@ -57,8 +57,7 @@ set (SOURCES
 )
 
 # Build a binary
-add_executable (
-        ${PROJECT}
+add_executable (${PROJECT}
         ${HEADERS}
         ${SOURCES}
         main.cpp
@@ -87,8 +86,7 @@ set (TEST_SOURCES
 )
 
 # Build a test binary
-add_executable (
-        ${TEST_NAME}
+add_executable (${TEST_NAME}
         ${HEADERS} ${SOURCES}
         ${TEST_HEADERS} ${TEST_SOURCES}
 )
@@ -99,6 +97,7 @@ target_link_libraries (${TEST_NAME}
         ${GLOG_LIBRARY}
         ${CMAKE_THREAD_LIBS_INIT}
 )
+# Symbol "_BUILT_WITH_CATCH" is needed to allow unit tests inside source files
 set_target_properties(${TEST_NAME}
                       PROPERTIES COMPILE_DEFINITIONS _BUILT_WITH_CATCH 
 )

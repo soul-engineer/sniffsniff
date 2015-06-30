@@ -21,7 +21,7 @@ set (CMAKE_CXX_FLAGS
 #------------------------------------------------------------------------------#
 #                        Configuration summary                                 #
 #------------------------------------------------------------------------------#
-# The whole idea of CMake configuration summary is taken from the PCRE project
+# CMake configuration summary idea is taken from the PCRE project
 message (STATUS "")
 message (STATUS "${PROJECT} project configuration summary:")
 message (STATUS "")

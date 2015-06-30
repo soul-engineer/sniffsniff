@@ -20,6 +20,7 @@ int main(int argc, char** argv)
     {
         google::InitGoogleLogging(argv[0]);
 
+        // TODO: this code is for quick test only
         config cfg;
         dispatcher disp;
         provider prov(disp);

@@ -33,16 +33,16 @@ dispatcher::dispatcher(const config& cfg)
 {
     try
     {
+        // Create implementation
         impl_.reset(new dispatcher_impl);
-        impl_->workers_.reserve(cfg.get_thread_count());
         
         // Create workers
+        impl_->workers_.reserve(cfg.get_thread_count());
+        impl_->threads_.reserve(cfg.get_thread_count());
         for (auto i = 0u; i < cfg.get_thread_count(); ++i)
         {
             impl_->workers_.emplace_back(worker(*this));
         }
-        
-        impl_->threads_.reserve(cfg.get_thread_count());
     }
     catch (const std::bad_alloc& e)
     {
@@ -54,7 +54,7 @@ dispatcher::dispatcher(const config& cfg)
     }
     catch (...)
     {
-        LOG(ERROR) << "Unknown exception while creating workers " ;
+        LOG(ERROR) << "Unknown exception while creating workers";
         throw;
     }
     
@@ -74,14 +74,14 @@ dispatcher::dispatcher(const config& cfg)
     {
         // Unexpected exception while starting workers
         // All running workers will be stopped in destructor
-        LOG(ERROR) << "Can't start workers - exiting";
+        LOG(ERROR) << "Can't start worker threads - exiting";
         throw;    
     }
 }
 
 dispatcher::~dispatcher()
 {
-   // Send a signal to threads to stop
+   // Send a stop signal to threads
     impl_->running_.store(false, std::memory_order_relaxed);
     // Wait for it
     std::for_each(impl_->threads_.begin(), impl_->threads_.end(),

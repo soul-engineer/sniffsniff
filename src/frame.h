@@ -37,7 +37,7 @@ public:
     
 protected:
     std::array<elem_t, MAX_SIZE> data_;
-    // Actually frame length in bytes
+    // Actual frame length in bytes
     size_t size_{};
 };
 

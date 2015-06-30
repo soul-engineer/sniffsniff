@@ -45,11 +45,13 @@ set (HEADERS
         ${HEADERS}
         config.h
         dispatcher.h
+        provider.h
 )
 set (SOURCES
         ${SOURCES}
         config.cpp
         dispatcher.cpp
+        provider.cpp
 )
 
 # Build a binary
@@ -78,6 +80,7 @@ set (TEST_HEADERS
 set (TEST_SOURCES
         config_test.cpp
         main_test.cpp
+        provider_test.cpp
 )
 
 # Build a test binary

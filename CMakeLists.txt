@@ -57,19 +57,11 @@ if (NOT GLOG_INCLUDE_DIR)
         message (FATAL_ERROR "glog includes are not found")
 endif ()
 
-# gflags includes
-find_path (GFLAGS_INCLUDE_DIR gflags/gflags.h)
-if (NOT GFLAGS_INCLUDE_DIR)
-        message (FATAL_ERROR "gflags includes are not found")
-endif ()
-
 message (STATUS "Google logging library:")
 message (STATUS "  glog library is found at ${GLOG_LIBRARY}")
 message (STATUS "  glog includes are found at ${GLOG_INCLUDE_DIR}")
-message (STATUS "  gflags includes are found at ${GFLAGS_INCLUDE_DIR}")
 
 include_directories (SYSTEM ${GLOG_INCLUDE_DIR})
-include_directories (SYSTEM ${GFLAGS_INCLUDE_DIR})
 
 #------------------------------------------------------------------------------#
 #                             Source files                                     #

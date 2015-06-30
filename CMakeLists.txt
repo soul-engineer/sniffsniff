@@ -14,7 +14,7 @@ set (EXTERNAL_SOURCES_DIR
 #                           Compiler settings                                  #
 #------------------------------------------------------------------------------#
 set (CMAKE_CXX_FLAGS
-        -std=c++11)
+        "-std=c++11 -Wall -Wextra")
 
 #------------------------------------------------------------------------------#
 #                        Configuration summary                                 #

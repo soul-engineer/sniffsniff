@@ -6,11 +6,35 @@
  */
 
 #include <glog/logging.h>
+#include "config.h"
+#include "provider.h"
+#include "dispatcher.h"
+#include <stdexcept>
 
 
 int main(int argc, char** argv)
 {
-    LOG(ERROR) << "Hello, world!";
-    return 0;
+    try
+    {
+        google::InitGoogleLogging(argv[0]);
+
+        config cfg;
+        dispatcher disp;
+        provider prov(disp);
+        prov.open_iface(cfg);
+        prov.run();
+        
+        return 0;
+    }
+    catch (const std::runtime_error& e)
+    {
+        LOG(ERROR) << "Can't open interface: " << e.what();
+    }
+    catch(...)
+    {
+        LOG(ERROR) << "Unknown exception";
+    }
+    
+    return -1;
 }
 

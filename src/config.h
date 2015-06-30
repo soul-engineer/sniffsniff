@@ -11,7 +11,9 @@
 #include <string>
 
 
-class config {
+// TODO: This class should wrap boost::program_options
+class config
+{
 public:
     config();
     config(const config& orig) = delete;

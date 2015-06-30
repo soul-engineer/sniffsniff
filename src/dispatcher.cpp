@@ -17,6 +17,6 @@ dispatcher::dispatcher()
 void dispatcher::dispatch_frame(const uint8_t* data, size_t len) noexcept
 {
     DCHECK(nullptr != data) << "data pointer is null";
-    LOG(ERROR) << "Packet length" << len;
+    LOG(ERROR) << "Packet length: " << len;
 }
 

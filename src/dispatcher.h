@@ -12,6 +12,8 @@
 #include <cstddef>
 
 
+// TODO: This class should contain some queue to distribute frames between
+// multiple processors
 class dispatcher
 {
 public:

@@ -12,6 +12,7 @@
 #include <glog/logging.h>
 #include <stdexcept>
 #include <cinttypes>
+#include <array>
 
 
 namespace
@@ -19,16 +20,16 @@ namespace
     // Maximum packet size to capture in bytes
     const int SNAP_LEN {65535};
     // Packet read timeout in milliseconds
-    const int READ_TIMEOUT_MS {1};
+    const int READ_TIMEOUT {1};
     
-    // pcap_next_ex result codes
+    // pcap_next_ex() result codes
     enum RES_CODES
     {
         // The packet was read without problems
         SUCCESS = 1,
-        // The timeout expired
+        // The timeout has expired
         TIMEOUT = 0,
-        // For pcaps only: there are no more packets to read from the savefile
+        // For pcaps only: there are no more packets to read from the pcap file
         PCAP_EOF = -2,
         // Other error
         ERROR = -1
@@ -55,20 +56,21 @@ provider::~provider() noexcept
 void provider::open_iface(const config& cfg)
 {
     // Initialize libpcap
-    char error_buffer[PCAP_ERRBUF_SIZE];
+    std::array<char, PCAP_ERRBUF_SIZE> error_buffer;
+    error_buffer.fill(0);
     
     dev_handler_ = pcap_open_live(
             cfg.get_if_name().c_str(),
             SNAP_LEN,
             cfg.get_promisc(),
-            READ_TIMEOUT_MS,
-            error_buffer);
+            READ_TIMEOUT,
+            error_buffer.data());
     
     if (nullptr == dev_handler_)
     {
         LOG(ERROR) << "Can't bind to the interface \"" << cfg.get_if_name() <<
-                "\". Error message is " << error_buffer;
-        throw std::runtime_error(error_buffer);
+                "\". Error message is " << error_buffer.data();
+        throw std::runtime_error(error_buffer.data());
     }
     
     // Set up flag to activate run cycle
@@ -77,7 +79,7 @@ void provider::open_iface(const config& cfg)
 
 void provider::run() noexcept
 {
-    CHECK(nullptr != dev_handler_) << "Initialize the provider first";
+    CHECK(nullptr != dev_handler_) << "Call open_iface() first";
     
     pcap_pkthdr*  pkt_header {nullptr}; 
     const u_char*  pkt_data {nullptr};
@@ -85,7 +87,7 @@ void provider::run() noexcept
     
     while (running_.test_and_set(std::memory_order_relaxed))
     {
-        // Read a packet
+        // Read a frame
         const int res_code {pcap_next_ex(handler, &pkt_header, &pkt_data)};
         
         switch (res_code)
@@ -104,7 +106,7 @@ void provider::run() noexcept
                 break;
                 
             case TIMEOUT:
-                // TODO:
+                // TODO: don't forget to choose right timeout value
                 break;
                 
             case PCAP_EOF:

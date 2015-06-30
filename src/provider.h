@@ -30,7 +30,7 @@ public:
 protected:
     dispatcher& dispatcher_;
     std::atomic_flag running_ {ATOMIC_FLAG_INIT};
-    void* dev_handler_;
+    void* dev_handler_ {};
 };
 
 #endif	/* PROVIDER_H */

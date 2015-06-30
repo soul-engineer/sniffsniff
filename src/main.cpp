@@ -10,18 +10,20 @@
 #include "provider.h"
 #include "dispatcher.h"
 #include <stdexcept>
+#include <iostream>
 
 
 int main(int argc, char** argv)
 {
-    (void) argc;
-    
     try
     {
         google::InitGoogleLogging(argv[0]);
 
         // TODO: this code is for quick test only
+        // Parse program options
         config cfg;
+        cfg.init(argc, argv);
+        
         dispatcher disp(cfg);
         provider prov(disp);
         prov.open_iface(cfg);
@@ -29,11 +31,16 @@ int main(int argc, char** argv)
         
         return 0;
     }
+    catch (const options_error& e)
+    {
+        std::cout << e.what() << std::endl;
+        return 0;
+    }
     catch (const std::runtime_error& e)
     {
         LOG(ERROR) << "Can't open interface: " << e.what();
     }
-    catch(...)
+    catch (...)
     {
         LOG(ERROR) << "Unknown exception";
     }

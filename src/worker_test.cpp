@@ -7,7 +7,7 @@
 
 #include <catch.hpp>
 #include "worker.h"
-#include "worker_pool.h"
+#include "dispatcher.h"
 #include "config.h"
 #include "frame_pool.h"
 
@@ -23,7 +23,7 @@ TEST_CASE( "Check maximum frame count in worker", TAGS )
     config cfg;
     // Disable internal workers
     cfg.set_thread_count(0);
-    worker_pool pool(cfg);
+    dispatcher pool(cfg);
     
     worker wrk(pool);
     

@@ -2,31 +2,32 @@
  * File:   dispatcher.h
  * Author: Artem.Nazyrov
  *
- * Created on June 30, 2015, 10:25 AM
+ * Created on July 7, 2015, 08:55 PM
  */
 
 #ifndef DISPATCHER_H
 #define	DISPATCHER_H
 
-#include <cinttypes>
-#include <cstddef>
+#include <memory>
 
+class config;
+struct dispatcher_impl;
 
-// TODO: This class should contain some queue to distribute frames between
-// multiple processors
 class dispatcher
 {
 public:
-    dispatcher();
+    dispatcher(const config& cfg);
     dispatcher(const dispatcher& orig) = delete;
     dispatcher(dispatcher&& orig) = delete;
     dispatcher& operator=(const dispatcher& orig) = delete;
-    ~dispatcher() = default;
+    ~dispatcher();
     
+    void stop_threads();
+    bool active() const;
     void dispatch_frame(const uint8_t* data, size_t len) noexcept;
     
 private:
-
+    std::unique_ptr<dispatcher_impl> impl_;
 };
 
 #endif	/* DISPATCHER_H */

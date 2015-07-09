@@ -21,8 +21,9 @@ namespace
 TEST_CASE( "Wrong device name should cause an exception", TAGS )
 {
     const auto FAKE_IF = "42: The answer to life, the universe and everything";
-    dispatcher disp;
     config cfg;
+    cfg.set_thread_count(0);
+    dispatcher disp(cfg);
     cfg.set_if_name(FAKE_IF);
     provider prov(disp);
             

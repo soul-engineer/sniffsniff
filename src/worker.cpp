@@ -6,7 +6,7 @@
  */
 
 #include "worker.h"
-#include "worker_pool.h"
+#include "dispatcher.h"
 #include "frame.h"
 #include "frame_pool.h"
 #include <boost/lockfree/spsc_queue.hpp>
@@ -39,7 +39,7 @@ struct worker_impl
 /*                                 worker                                     */
 /******************************************************************************/
 
-worker::worker(const worker_pool& pool)
+worker::worker(const dispatcher& pool)
 : pool_(pool)
 {
     try

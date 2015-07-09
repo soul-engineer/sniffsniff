@@ -10,14 +10,14 @@
 
 #include <memory>
 
-class worker_pool;
+class dispatcher;
 struct worker_impl;
 
 
 class worker
 {
 public:
-    worker(const worker_pool& pool);
+    worker(const dispatcher& pool);
     worker(const worker& orig) = delete;
     worker& operator=(const worker& orig) = delete;
     worker(worker&& orig);
@@ -34,7 +34,7 @@ public:
     bool add_frame(const uint8_t* data, size_t size);
     
 protected:
-    const worker_pool& pool_;
+    const dispatcher& pool_;
     std::unique_ptr<worker_impl> impl_;
 };
 

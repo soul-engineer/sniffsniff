@@ -22,7 +22,7 @@ int main(int argc, char** argv)
 
         // TODO: this code is for quick test only
         config cfg;
-        dispatcher disp;
+        dispatcher disp(cfg);
         provider prov(disp);
         prov.open_iface(cfg);
         prov.run();

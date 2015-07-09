@@ -97,6 +97,7 @@ set (TEST_SOURCES
         frame_test.cpp
         main_test.cpp
         provider_test.cpp
+        worker_test.cpp
 )
 
 # Build a test binary

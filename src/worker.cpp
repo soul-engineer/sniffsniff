@@ -8,24 +8,36 @@
 #include "worker.h"
 #include "worker_pool.h"
 #include "frame.h"
+#include "frame_pool.h"
 #include <boost/lockfree/spsc_queue.hpp>
 #include <glog/logging.h>
+#include <memory>
 
+
+/******************************************************************************/
+/*                             Worker_impl                                    */
+/******************************************************************************/
 
 namespace
 {
-    const size_t RING_SIZE {10};
+    const size_t TASKS_COUNT {frame_pool::POOL_SIZE + CAPACITY_CORRECTION()};
 }
 
 
 struct worker_impl
 {
-    // Every worker has its own queue to store a frame
+    // Frame pool
+    frame_pool pool_;
+    // Tasks queue
     boost::lockfree::spsc_queue<
-            frame,
-            boost::lockfree::capacity<RING_SIZE> > ring;
+            frame*,
+            boost::lockfree::capacity<TASKS_COUNT> > tasks_;
 };
 
+
+/******************************************************************************/
+/*                                 worker                                     */
+/******************************************************************************/
 
 worker::worker(const worker_pool& pool)
 : pool_(pool)
@@ -45,7 +57,7 @@ worker::worker(const worker_pool& pool)
         throw;
     }
     
-    LOG_IF(WARNING, !impl_->ring.is_lock_free()) <<
+    LOG_IF(WARNING, !impl_->tasks_.is_lock_free()) <<
             "Frame ring is not lock free";
 }
 
@@ -64,12 +76,45 @@ void worker::operator()()
 {
     while (pool_.active())
     {
+        frame* fr {};
+        auto deleter = [this](frame* fr)
+        {
+            this->impl_->pool_.release(fr);
+        };
         
+        // Check if there is a frame to process
+        if (impl_->tasks_.pop(fr))
+        {
+            std::unique_ptr<frame, decltype(deleter)> guard(fr, deleter);
+            
+            // TODO: no actual processing yet
+            LOG(ERROR) << "Packet length: " << fr->size();
+        }
     }
 }
 
-bool worker::try_push(const uint8_t* data, size_t size)
+bool worker::add_frame(const uint8_t* data, size_t size)
 {
-    DCHECK(size <= frame::MAX_SIZE) << "Frame is too big " << size << "B";
-    //return impl_->ring.push(frame(data, size));
+    DCHECK(size <= frame::MAX_SIZE) << "Frame is too big: " << size << "B";
+    
+    // Acquire a buffer from the pool
+    auto ptr = impl_->pool_.acquire();
+    if (nullptr == ptr)
+    {
+        return false;
+    }
+    
+    // Copy given frame to it ...
+    ptr->set(data, size);
+    // ... and place a buffer to the task queue
+    auto success = impl_->tasks_.push(ptr);
+    
+    if (!success)
+    {
+        LOG(ERROR) << "UB: Couldn't place a frame to the task queue";
+        impl_->pool_.release(ptr);
+        return false;
+    }
+    
+    return true;
 }

@@ -24,9 +24,16 @@ public:
     ~worker();
     void operator()();
     
-    bool try_push(const uint8_t* data, size_t size);
+    /**
+     * Adds given frame to task queue
+     * @param data A pointer to an ethernet frame
+     * @param size Frame length in bytes
+     * @return  true if task was added successfully,
+     * false if task queue is already full
+     */
+    bool add_frame(const uint8_t* data, size_t size);
     
-private:
+protected:
     const worker_pool& pool_;
     std::unique_ptr<worker_impl> impl_;
 };

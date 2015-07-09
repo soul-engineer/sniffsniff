@@ -22,11 +22,10 @@ public:
     dispatcher& operator=(const dispatcher& orig) = delete;
     ~dispatcher();
     
-    void stop_threads();
-    bool active() const;
+    bool active() const noexcept;
     void dispatch_frame(const uint8_t* data, size_t len) noexcept;
     
-private:
+protected:
     std::unique_ptr<dispatcher_impl> impl_;
 };
 

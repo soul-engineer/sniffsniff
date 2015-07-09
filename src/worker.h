@@ -12,6 +12,7 @@
 
 class dispatcher;
 struct worker_impl;
+class frame;
 
 
 class worker
@@ -36,6 +37,8 @@ public:
 protected:
     const dispatcher& pool_;
     std::unique_ptr<worker_impl> impl_;
+    
+    void parse_frame(const frame& fr) const;
 };
 
 #endif	/* WORKER_H */

@@ -86,10 +86,10 @@ void worker::operator()()
         if (impl_->tasks_.pop(fr))
         {
             std::unique_ptr<frame, decltype(deleter)> guard(fr, deleter);
-            
-            // TODO: no actual processing yet
-            LOG(ERROR) << "Packet length: " << fr->size();
+            parse_frame(*fr);
         }
+        
+        // TODO: Reduce CPU consuming of this busy loop
     }
 }
 
@@ -104,9 +104,9 @@ bool worker::add_frame(const uint8_t* data, size_t size)
         return false;
     }
     
-    // Copy given frame to it ...
+    // Copy given frame in the internal buffer ...
     ptr->set(data, size);
-    // ... and place a buffer to the task queue
+    // ... and place this buffer to the task queue
     auto success = impl_->tasks_.push(ptr);
     
     if (!success)
@@ -117,4 +117,10 @@ bool worker::add_frame(const uint8_t* data, size_t size)
     }
     
     return true;
+}
+
+void worker::parse_frame(const frame& fr) const
+{
+    // TODO: no actual processing yet
+    LOG(ERROR) << "Packet length: " << fr.size();
 }

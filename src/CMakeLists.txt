@@ -1,9 +1,11 @@
 #------------------------------------------------------------------------------#
 #                                 Boost                                        #
 #------------------------------------------------------------------------------#
+# Minimum version containing lockfree library
+set (BOOST_MIN_VERSION "1.53.0")
 find_package (
         Boost
-        REQUIRED
+        ${BOOST_MIN_VERSION} REQUIRED
         COMPONENTS system program_options
 )
 include_directories (SYSTEM ${Boost_INCLUDE_DIRS})

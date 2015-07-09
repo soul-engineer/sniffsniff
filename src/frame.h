@@ -24,7 +24,11 @@ public:
     frame& operator=(const frame& orig) = delete;
     frame(frame&& orig) = delete;
     
-    // Copies given data to the internal buffer
+    /**
+     * Copies given data to the internal buffer
+     * @param data A pointer to an ethernet frame
+     * @param size Frame length in bytes
+     */
     void set(const elem_t* data, size_t size) noexcept;
     const elem_t* get() const noexcept
     { return data_.data(); }

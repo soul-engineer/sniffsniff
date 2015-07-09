@@ -30,6 +30,8 @@ public:
     
     uint8_t get_thread_count() const noexcept
     { return thread_count_; }
+    void set_thread_count(uint32_t thread_count) noexcept
+    { thread_count_ = thread_count; }
 
 protected:
     std::string if_name_;

@@ -21,3 +21,11 @@ TEST_CASE( "Test if_name getter and setter" )
     cfg.set_if_name(IF_NAME.c_str());
     REQUIRE( IF_NAME == cfg.get_if_name() );
 }
+
+TEST_CASE( "Test thread_count getter and setter" )
+{
+    const auto COUNT = 123;
+    config cfg;
+    cfg.set_thread_count(COUNT);
+    REQUIRE( COUNT == cfg.get_thread_count() );
+}

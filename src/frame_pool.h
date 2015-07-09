@@ -32,7 +32,9 @@ class frame_pool
 {
 public:
     // Fixed item count in a pool
-    static const size_t POOL_SIZE {100};
+    // Attention! Be carefully with this constant, it can cause stack overflow
+    // If you need a bigger value, use dynamic memory for data_
+    static const size_t POOL_SIZE {25};
     
     frame_pool();
     frame_pool(const frame_pool& orig) = delete;

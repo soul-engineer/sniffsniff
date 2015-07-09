@@ -25,7 +25,7 @@ public:
     frame(frame&& orig) = delete;
     
     // Copies given data to the internal buffer
-    void set(const elem_t* data, size_t size);
+    void set(const elem_t* data, size_t size) noexcept;
     const elem_t* get() const noexcept
     { return data_.data(); }
     size_t size() const noexcept

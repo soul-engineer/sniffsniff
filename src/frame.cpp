@@ -9,7 +9,7 @@
 #include <algorithm>
 #include <glog/logging.h>
 
-void frame::set(const frame::elem_t* data, size_t size)
+void frame::set(const frame::elem_t* data, size_t size) noexcept
 {
     DCHECK(size <= MAX_SIZE) << "Too much data to copy";
     std::copy(data, data + size, data_.begin());

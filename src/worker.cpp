@@ -79,7 +79,7 @@ void worker::operator()()
         frame* fr {};
         auto deleter = [this](frame* fr)
         {
-            this->impl_->pool_.release(fr);
+            impl_->pool_.release(fr);
         };
         
         // Check if there is a frame to process

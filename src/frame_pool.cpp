@@ -15,7 +15,7 @@ frame_pool::frame_pool()
     std::for_each(data_.begin(), data_.end(),
             [this](frame& fr)
             {
-                this->ring_.push(&fr);
+                ring_.push(&fr);
             });
 }
 
